@@ -14,23 +14,19 @@ public class Scatter implements Operation{
      * @param sendcount Сколько
      * @param sendtype Какой тип
      * @param recvbuf Куда
-     * @param recvcount Сколько
-     * @param recvtype Какй тип
      */
     @Override
     public void execution(Matrix sendbuf,
                           int sendcount,
-                          Serializable sendtype,
-                          GroupOfWorkers recvbuf,
-                          int recvcount,
-                          Serializable recvtype) {
-        if(sendtype instanceof Datatype) {
+                          Datatype sendtype,
+                          GroupOfWorkers recvbuf) {
+        if(sendtype instanceof DatatypeColumnMatrix) {
             datatypes = new DataManager(sendbuf, sendbuf.getWeight()/p2, sendbuf.getHight(), p1, p2, 1).getDatatypes();
             for (int index = 0; index < recvbuf.size(); index++) {
                 recvbuf.getWorker(index).setPartB(datatypes.get(index).getPartMatrix());
             }
         }
-        if(sendtype instanceof Double) {
+        if(sendtype instanceof DatatypeRowMatrix) {
             datatypes = new DataManager(sendbuf, sendbuf.getWeight(), sendbuf.getHight()/p1, p1, p2, 0).getDatatypes();
             for (int index = 0; index < recvbuf.size(); index++) {
                 recvbuf.getWorker(index).setPartA(datatypes.get(index).getPartMatrix());

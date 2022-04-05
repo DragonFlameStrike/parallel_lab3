@@ -18,13 +18,13 @@ public class DataManager {
         if(diraction == 0){
             int countOfElements = matrix.size()/p1;
             for (int datatypeNumber = 0; datatypeNumber < p1; datatypeNumber++) {
-                datatypes.add(new Datatype(matrix,datatypeNumber,weight,hight,countOfElements));
+                datatypes.add(new DatatypeRowMatrix().createDatatype(matrix,datatypeNumber,weight,hight,countOfElements));
             }
         }
         if(diraction == 1){
             int countOfElements = matrix.size()/p2;
             for (int datatypeNumber = 0; datatypeNumber < p2; datatypeNumber++) {
-                datatypes.add(new Datatype(matrix,datatypeNumber,weight,hight,countOfElements));
+                datatypes.add(new DatatypeColumnMatrix().createDatatype(matrix,datatypeNumber,weight,hight,countOfElements));
             }
         }
     }
