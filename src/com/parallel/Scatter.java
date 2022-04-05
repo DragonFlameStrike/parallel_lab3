@@ -1,35 +1,40 @@
 package com.parallel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import static com.parallel.Main.*;
 
 public class Scatter implements Operation{
-
-    @Override
-    public void execution(ArrayList<Datatype> sendtype, Object recvbuf) {
-
-    }
-
+    private ArrayList<Datatype> datatypes;
     /**
      *
-     * @param sendbuf this.A
-     * @param sendoffset 0
-     * @param sendcount
-     * @param sendtype Vector<"Double">
-     * @param recvbuf worker
-     * @param recvoffset 0
-     * @param recvcount
-     * @param recvtype Datatype
+     * @param sendbuf Откуда
+     * @param sendcount Сколько
+     * @param sendtype Какой тип
+     * @param recvbuf Куда
+     * @param recvcount Сколько
+     * @param recvtype Какй тип
      */
-    public void execution1(java.lang.Object sendbuf,
-                           int sendoffset,
-                           int sendcount,
-                           Datatype sendtype,
-                           java.lang.Object recvbuf,
-                           int recvoffset,
-                           int recvcount,
-                           Datatype recvtype) {
-        ArrayList<Datatype> datatypes = new DataManager(A,n1,n2,p1,0).getDatatypes();
+    @Override
+    public void execution(Matrix sendbuf,
+                          int sendcount,
+                          Serializable sendtype,
+                          GroupOfWorkers recvbuf,
+                          int recvcount,
+                          Serializable recvtype) {
+        if(sendtype instanceof Datatype) {
+            datatypes = new DataManager(sendbuf, sendbuf.getWeight()/p2, sendbuf.getHight(), p1, p2, 1).getDatatypes();
+            for (int index = 0; index < recvbuf.size(); index++) {
+                recvbuf.getWorker(index).setPartB(datatypes.get(index).getPartMatrix());
+            }
+        }
+        if(sendtype instanceof Double) {
+            datatypes = new DataManager(sendbuf, sendbuf.getWeight(), sendbuf.getHight()/p1, p1, p2, 0).getDatatypes();
+            for (int index = 0; index < recvbuf.size(); index++) {
+                recvbuf.getWorker(index).setPartA(datatypes.get(index).getPartMatrix());
+            }
+        }
     }
 }

@@ -1,9 +1,14 @@
 package com.parallel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public interface Operation {
     public void execution(
-            ArrayList<Datatype> sendtype,
-            java.lang.Object recvbuf);
+            Matrix matrix,
+            int sendcount,
+            Serializable sendtype,
+            GroupOfWorkers groupOfWorkers,
+            int recvcount,
+            Serializable recvtype);
 }

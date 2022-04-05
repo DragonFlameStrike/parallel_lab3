@@ -1,29 +1,15 @@
 package com.parallel;
 
-import java.util.Vector;
-
-import static com.parallel.Main.n2;
-import static com.parallel.Main.n1;
-import static com.parallel.Main.n3;
-import static com.parallel.Main.p2;
-import static com.parallel.Main.p1;
-
 class Worker implements Runnable, Process {
     Thread t;
-    Datatype partA;
-    Datatype partB;
-    Vector<Double> result;
+    Matrix partA;
+    Matrix partB;
+    Matrix result;
     int workerNumber;
 
 
     Worker(int workerNumber) {
         this.workerNumber = workerNumber;
-        result = new Vector<>();
-
-        result = new Vector<>();
-        partA = new Datatype();
-        partB = new Datatype();
-
     }
 
     @Override
@@ -47,8 +33,15 @@ class Worker implements Runnable, Process {
 ////        return sum;
 //    }
 
-    Vector<Double> getResult() {
+    Matrix getResult() {
         return result;
     }
 
+    public void setPartA(Matrix partA) {
+        this.partA = partA;
+    }
+
+    public void setPartB(Matrix partB) {
+        this.partB = partB;
+    }
 }

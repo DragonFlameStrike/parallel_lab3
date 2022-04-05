@@ -8,17 +8,24 @@ public class DataManager {
     /**
      *
      * @param matrix matrix
-     * @param n1 matrix weight
-     * @param n2 matrix hight
+     * @param weight Ширина среза
+     * @param hight Высота среза
      * @param p1 process grid hight
-     * @param diraction 0 - horizontal,1 - vertically
+     * @param p2 process grid weight
+     * @param diraction 0 - horizontal,1 - vertical
      */
-    public DataManager(Vector<Double> matrix, int n1, int n2, int p1, int diraction) {
+    public DataManager(Matrix matrix, int weight, int hight, int p1,int p2,int diraction) {
         if(diraction == 0){
-
+            int countOfElements = matrix.size()/p1;
+            for (int datatypeNumber = 0; datatypeNumber < p1; datatypeNumber++) {
+                datatypes.add(new Datatype(matrix,datatypeNumber,weight,hight,countOfElements));
+            }
         }
         if(diraction == 1){
-
+            int countOfElements = matrix.size()/p2;
+            for (int datatypeNumber = 0; datatypeNumber < p2; datatypeNumber++) {
+                datatypes.add(new Datatype(matrix,datatypeNumber,weight,hight,countOfElements));
+            }
         }
     }
 
