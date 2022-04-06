@@ -28,7 +28,7 @@ public class Main {
             if(workerNumber % p2 == 0) { neighboursList.add(null); } else { neighboursList.add(processes.get(workerIndex - 1));}
             GroupOfWorkers neighboursGroup = new GroupOfWorkers(neighboursList);
             ((Worker)processes.get(workerIndex)).setNeighbours(neighboursGroup);
-        }
+        } // init neighbours in every worker
         ((Root) processes.get(root)).setWorkers(processes.subList(1,processes.size()));
         processes.get(root).start();
     }
