@@ -6,8 +6,11 @@ class Worker implements Runnable, Process {
     Matrix partB;
     Matrix result;
     int workerNumber;
-
-
+    GroupOfWorkers neighbours;
+    //     0
+    //   3 x 1
+    //     2
+    // x == this worker
     Worker(int workerNumber) {
         this.workerNumber = workerNumber;
     }
@@ -37,11 +40,35 @@ class Worker implements Runnable, Process {
         return result;
     }
 
+    public void setNeighbours(GroupOfWorkers neighbours){
+        this.neighbours = neighbours;
+    }
+
     public void setPartA(Matrix partA) {
-        this.partA = partA;
+        for (int i = 0; i < partA.size(); i++) {
+            if(this.partA == null) this.partA = new Matrix(partA.getWeight(),partA.getHight());
+            this.partA.pullElement(partA.getElement(i));
+        }
     }
 
     public void setPartB(Matrix partB) {
-        this.partB = partB;
+        for (int i = 0; i < partB.size(); i++) {
+            if(this.partB == null) this.partB = new Matrix(partB.getWeight(),partB.getHight());
+            this.partB.pullElement(partB.getElement(i));
+        }
+    }
+
+    public void sendData(int diraction, int sendcount) {
+        sendcount--;
+        if(sendcount>0){
+            if(diraction == 0){
+                neighbours.getWorker(1).setPartA(partA);
+                neighbours.getWorker(1).sendData(diraction,sendcount);
+            }
+            if(diraction == 1){
+                neighbours.getWorker(2).setPartB(partB);
+                neighbours.getWorker(2).sendData(diraction,sendcount);
+            }
+        }
     }
 }

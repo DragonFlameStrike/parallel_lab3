@@ -22,7 +22,7 @@ public class Root implements Process,Runnable{
         B = new Matrix(n2,n3);
         A.initA();
         B.initB();
-        A.print();
+
     }
     @Override
     public void run() {
@@ -30,6 +30,8 @@ public class Root implements Process,Runnable{
         GroupOfWorkers firstRowWorkers = new GroupOfWorkers(workers.subList(0, p2));
         new Scatter().execution(A,1,new DatatypeRowMatrix(),firstColumnWorkers);
         new Scatter().execution(B,1,new DatatypeColumnMatrix(),firstRowWorkers);
+        new BCast().execution(null,p2,new DatatypeRowMatrix(),firstColumnWorkers);
+        new BCast().execution(null,p1,new DatatypeColumnMatrix(),firstRowWorkers);
         workers.start();
         synchronized (this) {
             wait = true;
