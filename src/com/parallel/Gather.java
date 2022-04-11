@@ -6,9 +6,10 @@ import java.util.ArrayList;
 public class Gather implements Operation {
     @Override
     public void execution(
-            Matrix matrix,
+            Matrix sendbuf,
             int sendcount,
             Datatype sendtype,
-            GroupOfWorkers groupOfWorkers) {
+            GroupOfWorkers workers,
+            String recvbuf) {
     }
 }

@@ -28,10 +28,10 @@ public class Root implements Process,Runnable{
     public void run() {
         GroupOfWorkers firstColumnWorkers = new GroupOfWorkers(workers.subColumn(0,p2));
         GroupOfWorkers firstRowWorkers = new GroupOfWorkers(workers.subList(0, p2));
-        new Scatter().execution(A,1,new DatatypeRowMatrix(),firstColumnWorkers);
-        new Scatter().execution(B,1,new DatatypeColumnMatrix(),firstRowWorkers);
-        new BCast().execution(null,p2,new DatatypeRowMatrix(),firstColumnWorkers);
-        new BCast().execution(null,p1,new DatatypeColumnMatrix(),firstRowWorkers);
+        new Scatter().execution(A,p1,new DatatypeRowMatrix(),firstColumnWorkers,"partA");
+        new Scatter().execution(B,p2,new DatatypeColumnMatrix(),firstRowWorkers,"partB");
+        //new BCast().execution(null,p2,new DatatypeRowMatrix(),firstColumnWorkers);
+        //new BCast().execution(null,p1,new DatatypeColumnMatrix(),firstRowWorkers);
         workers.start();
         synchronized (this) {
             wait = true;
@@ -43,7 +43,7 @@ public class Root implements Process,Runnable{
                 }
             }
         }
-        new Gather().execution(result,1,new DatatypeRowMatrix(),workers);
+        new Gather().execution(result,1,new DatatypeRowMatrix(),workers,"");
         result.print();
     }
 

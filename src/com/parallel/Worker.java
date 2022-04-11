@@ -1,5 +1,7 @@
 package com.parallel;
 
+import java.util.Objects;
+
 class Worker implements Runnable, Process {
     Thread t;
     Matrix partA;
@@ -44,31 +46,37 @@ class Worker implements Runnable, Process {
         this.neighbours = neighbours;
     }
 
-    public void setPartA(Matrix partA) {
-        for (int i = 0; i < partA.size(); i++) {
-            if(this.partA == null) this.partA = new Matrix(partA.getWeight(),partA.getHight());
-            this.partA.pullElement(partA.getElement(i));
-        }
-    }
+//    public void setFirstPart(Matrix firstPart) {
+//        for (int i = 0; i < firstPart.size(); i++) {
+//            if(this.firstPart == null) this.firstPart = new Matrix(firstPart.getWeight(), firstPart.getHight());
+//            this.firstPart.pullElement(firstPart.getElement(i));
+//        }
+//    }
+//
+//    public void setSecondPart(Matrix secondPart) {
+//        for (int i = 0; i < secondPart.size(); i++) {
+//            if(this.secondPart == null) this.secondPart = new Matrix(secondPart.getWeight(), secondPart.getHight());
+//            this.secondPart.pullElement(secondPart.getElement(i));
+//        }
+//    }
 
-    public void setPartB(Matrix partB) {
-        for (int i = 0; i < partB.size(); i++) {
-            if(this.partB == null) this.partB = new Matrix(partB.getWeight(),partB.getHight());
-            this.partB.pullElement(partB.getElement(i));
-        }
-    }
+//    public void sendData(int diraction, int sendcount) {
+//        sendcount--;
+//        if(sendcount>0){
+//            if(diraction == 0){
+//                neighbours.getWorker(1).setFirstPart(firstPart);
+//                neighbours.getWorker(1).sendData(diraction,sendcount);
+//            }
+//            if(diraction == 1){
+//                neighbours.getWorker(2).setSecondPart(secondPart);
+//                neighbours.getWorker(2).sendData(diraction,sendcount);
+//            }
+//        }
+//    }
 
-    public void sendData(int diraction, int sendcount) {
-        sendcount--;
-        if(sendcount>0){
-            if(diraction == 0){
-                neighbours.getWorker(1).setPartA(partA);
-                neighbours.getWorker(1).sendData(diraction,sendcount);
-            }
-            if(diraction == 1){
-                neighbours.getWorker(2).setPartB(partB);
-                neighbours.getWorker(2).sendData(diraction,sendcount);
-            }
-        }
+    public void setDatatype(Datatype datatype,String rcvBuffer) {
+        Matrix partMatrix = datatype.getPartMatrix();
+        if (Objects.equals(rcvBuffer, "partA")) this.partA = partMatrix;
+        if (Objects.equals(rcvBuffer, "partB")) this.partB = partMatrix;
     }
 }

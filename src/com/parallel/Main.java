@@ -6,8 +6,8 @@ import java.util.Vector;
 
 
 public class Main {
-    static final int p1 = 4;
-    static final int p2 = 4;
+    static final int p1 = 2;
+    static final int p2 = 2;
     static final int n1 = 8;
     static final int n2 = 8;
     static final int n3 = 8;

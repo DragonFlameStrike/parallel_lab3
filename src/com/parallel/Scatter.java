@@ -1,36 +1,39 @@
 package com.parallel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Vector;
-
-import static com.parallel.Main.*;
 
 public class Scatter implements Operation{
     private ArrayList<Datatype> datatypes;
     /**
-     *
      * @param sendbuf Откуда
      * @param sendcount Сколько
      * @param sendtype Какой тип
-     * @param recvbuf Куда
+     * @param workers Куда
      */
     @Override
     public void execution(Matrix sendbuf,
                           int sendcount,
                           Datatype sendtype,
-                          GroupOfWorkers recvbuf) {
-        if(sendtype instanceof DatatypeColumnMatrix) {
-            datatypes = new DataManager(sendbuf, sendbuf.getWeight()/p2, sendbuf.getHight(), p1, p2, 1).getDatatypes();
-            for (int index = 0; index < recvbuf.size(); index++) {
-                recvbuf.getWorker(index).setPartB(datatypes.get(index).getPartMatrix());
-            }
+                          GroupOfWorkers workers,
+                          String recvbuf) {
+        datatypes = new ArrayList<>();
+        int countOfElements = sendbuf.size()/sendcount;
+        for (int datatypeNumber = 0; datatypeNumber < sendcount; datatypeNumber++) {
+            datatypes.add(sendtype.createDatatype(sendbuf,datatypeNumber,countOfElements));
         }
-        if(sendtype instanceof DatatypeRowMatrix) {
-            datatypes = new DataManager(sendbuf, sendbuf.getWeight(), sendbuf.getHight()/p1, p1, p2, 0).getDatatypes();
-            for (int index = 0; index < recvbuf.size(); index++) {
-                recvbuf.getWorker(index).setPartA(datatypes.get(index).getPartMatrix());
-            }
+        for (int index = 0; index < workers.size(); index++) {
+            workers.getWorker(index).setDatatype(datatypes.get(index),recvbuf);
         }
+
+//        if(sendtype instanceof DatatypeColumnMatrix) {
+//            for (int index = 0; index < workers.size(); index++) {
+//                workers.getWorker(index).setSecondPart(datatypes.get(index).getPartMatrix());
+//            }
+//        }
+//        if(sendtype instanceof DatatypeRowMatrix) {
+//            for (int index = 0; index < workers.size(); index++) {
+//                workers.getWorker(index).setFirstPart(datatypes.get(index).getPartMatrix());
+//            }
+//        }
     }
 }

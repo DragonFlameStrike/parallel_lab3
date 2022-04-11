@@ -3,8 +3,9 @@ package com.parallel;
 
 public interface Operation {
     public void execution(
-            Matrix matrix,
+            Matrix sendbuf,
             int sendcount,
             Datatype sendtype,
-            GroupOfWorkers groupOfWorkers);
+            GroupOfWorkers workers,
+            String recvbuf);
 }
