@@ -46,14 +46,14 @@ class Worker implements Runnable, Process {
         this.neighbours = neighbours;
     }
 
-//    public void setFirstPart(Matrix firstPart) {
+//    public void setPartA(Matrix partA) {
 //        for (int i = 0; i < firstPart.size(); i++) {
 //            if(this.firstPart == null) this.firstPart = new Matrix(firstPart.getWeight(), firstPart.getHight());
 //            this.firstPart.pullElement(firstPart.getElement(i));
 //        }
 //    }
 //
-//    public void setSecondPart(Matrix secondPart) {
+//    public void setPartB(Matrix partB) {
 //        for (int i = 0; i < secondPart.size(); i++) {
 //            if(this.secondPart == null) this.secondPart = new Matrix(secondPart.getWeight(), secondPart.getHight());
 //            this.secondPart.pullElement(secondPart.getElement(i));
@@ -64,11 +64,11 @@ class Worker implements Runnable, Process {
 //        sendcount--;
 //        if(sendcount>0){
 //            if(diraction == 0){
-//                neighbours.getWorker(1).setFirstPart(firstPart);
+//                neighbours.getWorker(1).setPartA(partA);
 //                neighbours.getWorker(1).sendData(diraction,sendcount);
 //            }
 //            if(diraction == 1){
-//                neighbours.getWorker(2).setSecondPart(secondPart);
+//                neighbours.getWorker(2).setPartB(partB);
 //                neighbours.getWorker(2).sendData(diraction,sendcount);
 //            }
 //        }
@@ -78,5 +78,11 @@ class Worker implements Runnable, Process {
         Matrix partMatrix = datatype.getPartMatrix();
         if (Objects.equals(rcvBuffer, "partA")) this.partA = partMatrix;
         if (Objects.equals(rcvBuffer, "partB")) this.partB = partMatrix;
+    }
+
+    public Matrix getPartMatrix(String buf) {
+        if(Objects.equals(buf, "partA")) return partA;
+        if(Objects.equals(buf, "partB")) return partB;
+        return null;
     }
 }

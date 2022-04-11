@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class Scatter implements Operation{
     private ArrayList<Datatype> datatypes;
     /**
-     * @param sendbuf Откуда
-     * @param sendcount Сколько
-     * @param sendtype Какой тип
-     * @param workers Куда
+     * @param sendbuf Откуда брать
+     * @param sendcount Сколько брать
+     * @param sendtype Что собирать
+     * @param workers Куда отправлять
+     * @param recvbuf Куда класть
      */
-    @Override
     public void execution(Matrix sendbuf,
                           int sendcount,
                           Datatype sendtype,
@@ -24,16 +24,5 @@ public class Scatter implements Operation{
         for (int index = 0; index < workers.size(); index++) {
             workers.getWorker(index).setDatatype(datatypes.get(index),recvbuf);
         }
-
-//        if(sendtype instanceof DatatypeColumnMatrix) {
-//            for (int index = 0; index < workers.size(); index++) {
-//                workers.getWorker(index).setSecondPart(datatypes.get(index).getPartMatrix());
-//            }
-//        }
-//        if(sendtype instanceof DatatypeRowMatrix) {
-//            for (int index = 0; index < workers.size(); index++) {
-//                workers.getWorker(index).setFirstPart(datatypes.get(index).getPartMatrix());
-//            }
-//        }
     }
 }

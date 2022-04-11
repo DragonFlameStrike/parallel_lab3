@@ -1,21 +1,23 @@
 package com.parallel;
 
 public class BCast implements Operation{
-    private int diraction;
-    @Override
-    public void execution(Matrix sendbuf,
-                          int sendcount,
-                          Datatype sendtype,
-                          GroupOfWorkers workers,
-                          String recvbuf) {
-//        for (int worker = 0; worker < groupOfWorkers.size(); worker++) {
-//            if(sendtype instanceof DatatypeColumnMatrix) {
-//                diraction = 1; // Vertical
-//            }
-//            if(sendtype instanceof DatatypeRowMatrix) {
-//                diraction = 0; // horizontal
-//            }
-//            groupOfWorkers.getWorker(worker).sendData(diraction,sendcount);
-//        }
+    /**
+     * @param groupOfWorkers Откуда брать
+     * @param buf Что брать
+     * @param count Сколько брать
+     * @param datatype Что из этого всего собирать
+     * @param commutator И как это все отправлять
+     */
+    public void execution(GroupOfWorkers groupOfWorkers,
+                          String buf,
+                          int count,
+                          Datatype datatype,
+                          Commutator commutator) {
+        for (int index = 0; index < groupOfWorkers.size(); index++) {
+            Worker worker = groupOfWorkers.getWorker(index);
+            Datatype data = datatype.createDatatype(worker.getPartMatrix(buf),0,count);
+            commutator.sendData(index,data);
+        }
     }
 }
+

@@ -55,4 +55,12 @@ public class GroupOfWorkers {
     public int size() {
         return workers.size();
     }
+
+    public GroupOfWorkers getSubGroupOfWorkers(int count, int offset, int index) {
+        int startIndex = 1+index*(count+offset);
+        int finishIndex = startIndex+count;
+        ArrayList<Worker> subWorkers = this.subList(startIndex,finishIndex);
+        GroupOfWorkers subGroupOfWorkers = new GroupOfWorkers(subWorkers);
+        return subGroupOfWorkers;
+    }
 }

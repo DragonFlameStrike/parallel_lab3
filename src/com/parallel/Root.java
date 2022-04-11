@@ -1,8 +1,6 @@
 package com.parallel;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import static com.parallel.Main.*;
 
@@ -30,8 +28,8 @@ public class Root implements Process,Runnable{
         GroupOfWorkers firstRowWorkers = new GroupOfWorkers(workers.subList(0, p2));
         new Scatter().execution(A,p1,new DatatypeRowMatrix(),firstColumnWorkers,"partA");
         new Scatter().execution(B,p2,new DatatypeColumnMatrix(),firstRowWorkers,"partB");
-        //new BCast().execution(null,p2,new DatatypeRowMatrix(),firstColumnWorkers);
-        //new BCast().execution(null,p1,new DatatypeColumnMatrix(),firstRowWorkers);
+        new BCast().execution(firstColumnWorkers,"partA",A.size()/p1,new DatatypeMatrix(),new RowCommutator(workers));
+        new BCast().execution(firstRowWorkers,"partB",B.size()/p2,new DatatypeMatrix(),new ColumnCommutator(workers));
         workers.start();
         synchronized (this) {
             wait = true;
