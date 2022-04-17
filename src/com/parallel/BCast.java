@@ -16,7 +16,7 @@ public class BCast implements Operation{
         for (int index = 0; index < groupOfWorkers.size(); index++) {
             Worker worker = groupOfWorkers.getWorker(index);
             Datatype data = datatype.createDatatype(worker.getPartMatrix(buf),0,count);
-            commutator.sendData(index,data);
+            commutator.sendDataAllInGroupFromFirst(index,data);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.parallel;
 
 public interface Commutator {
-    void sendData(int index,Datatype datatype);
+    void sendDataAllInGroupFromFirst(int groupNumber,Datatype datatype);
+    Worker getNextWorkerToReachGoal(int workerNumber, int where);
 }

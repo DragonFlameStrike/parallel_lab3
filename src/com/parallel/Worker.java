@@ -8,11 +8,6 @@ class Worker implements Runnable, Process {
     Matrix partB;
     Matrix result;
     int workerNumber;
-    GroupOfWorkers neighbours;
-    //     0
-    //   3 x 1
-    //     2
-    // x == this worker
     Worker(int workerNumber) {
         this.workerNumber = workerNumber;
     }
@@ -42,39 +37,7 @@ class Worker implements Runnable, Process {
         return result;
     }
 
-    public void setNeighbours(GroupOfWorkers neighbours){
-        this.neighbours = neighbours;
-    }
-
-//    public void setPartA(Matrix partA) {
-//        for (int i = 0; i < firstPart.size(); i++) {
-//            if(this.firstPart == null) this.firstPart = new Matrix(firstPart.getWeight(), firstPart.getHight());
-//            this.firstPart.pullElement(firstPart.getElement(i));
-//        }
-//    }
-//
-//    public void setPartB(Matrix partB) {
-//        for (int i = 0; i < secondPart.size(); i++) {
-//            if(this.secondPart == null) this.secondPart = new Matrix(secondPart.getWeight(), secondPart.getHight());
-//            this.secondPart.pullElement(secondPart.getElement(i));
-//        }
-//    }
-
-//    public void sendData(int diraction, int sendcount) {
-//        sendcount--;
-//        if(sendcount>0){
-//            if(diraction == 0){
-//                neighbours.getWorker(1).setPartA(partA);
-//                neighbours.getWorker(1).sendData(diraction,sendcount);
-//            }
-//            if(diraction == 1){
-//                neighbours.getWorker(2).setPartB(partB);
-//                neighbours.getWorker(2).sendData(diraction,sendcount);
-//            }
-//        }
-//    }
-
-    public void setDatatype(Datatype datatype,String rcvBuffer) {
+    public void setPartMatrix(Datatype datatype, String rcvBuffer) {
         Matrix partMatrix = datatype.getPartMatrix();
         if (Objects.equals(rcvBuffer, "partA")) this.partA = partMatrix;
         if (Objects.equals(rcvBuffer, "partB")) this.partB = partMatrix;
@@ -84,5 +47,27 @@ class Worker implements Runnable, Process {
         if(Objects.equals(buf, "partA")) return partA;
         if(Objects.equals(buf, "partB")) return partB;
         return null;
+    }
+
+    public int getWorkerNumber() {
+        return workerNumber;
+    }
+
+    public void sendDatatype(int where, Datatype datatype, boolean saveToCurr, boolean saveToEveryWorker, String rcvBuffer, Commutator commutator) {
+        if (saveToCurr) {
+            Datatype newDatatype = null;
+            try {
+                newDatatype = datatype.clone();
+            } catch (CloneNotSupportedException e) {
+                System.out.println("Clone Exeption");
+            }
+            if (newDatatype != null) {
+                setPartMatrix(newDatatype, rcvBuffer);
+            }
+        }
+        if(where!=this.workerNumber) {
+            Worker nextWorker = commutator.getNextWorkerToReachGoal(this.workerNumber,where);
+            nextWorker.sendDatatype(where, datatype, saveToEveryWorker, saveToEveryWorker, rcvBuffer, commutator);
+        }
     }
 }

@@ -24,8 +24,8 @@ public class Root implements Process,Runnable{
     }
     @Override
     public void run() {
-        GroupOfWorkers firstColumnWorkers = new GroupOfWorkers(workers.subColumn(0,p2));
-        GroupOfWorkers firstRowWorkers = new GroupOfWorkers(workers.subList(0, p2));
+        GroupOfWorkers firstColumnWorkers = new GroupOfWorkers(workers.subList(0,1,p2-1,p1));
+        GroupOfWorkers firstRowWorkers = new GroupOfWorkers(workers.subList(0,p2,0,p2));
         new Scatter().execution(A,p1,new DatatypeRowMatrix(),firstColumnWorkers,"partA");
         new Scatter().execution(B,p2,new DatatypeColumnMatrix(),firstRowWorkers,"partB");
         new BCast().execution(firstColumnWorkers,"partA",A.size()/p1,new DatatypeMatrix(),new RowCommutator(workers));

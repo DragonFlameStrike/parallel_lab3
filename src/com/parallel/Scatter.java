@@ -22,7 +22,7 @@ public class Scatter implements Operation{
             datatypes.add(sendtype.createDatatype(sendbuf,datatypeNumber,countOfElements));
         }
         for (int index = 0; index < workers.size(); index++) {
-            workers.getWorker(index).setDatatype(datatypes.get(index),recvbuf);
+            workers.getWorker(index).setPartMatrix(datatypes.get(index),recvbuf);
         }
     }
 }

@@ -24,23 +24,18 @@ public class GroupOfWorkers {
         return workers;
     }
 
-    public ArrayList<Worker> subList(int startIndex,int finishIndex) {
+    public ArrayList<Worker> subList(int startIndex,int count,int offset,int total) {
         ArrayList<Worker> subWorkers  = new ArrayList<>();
-        for (int numWorker = startIndex; numWorker < finishIndex; numWorker++) {
-            subWorkers.add(workers.get(numWorker));
-        }
-        return subWorkers;
-    }
-
-    public ArrayList<Worker> subColumn(int startIndex,int offset) {
-        ArrayList<Worker> subWorkers  = new ArrayList<>();
-        for (int numWorker = startIndex; numWorker < workers.size(); numWorker++) {
-            if(numWorker%offset == 0){
+        for (int numWorker = startIndex,countOfElement = 0; countOfElement < total; numWorker+=offset) {
+            for (int i = 0; i < count; i++) {
                 subWorkers.add(workers.get(numWorker));
+                numWorker++;
+                countOfElement++;
             }
         }
         return subWorkers;
     }
+
     public void start(){
         for (Worker worker:
                 workers) {
@@ -56,10 +51,9 @@ public class GroupOfWorkers {
         return workers.size();
     }
 
-    public GroupOfWorkers getSubGroupOfWorkers(int count, int offset, int index) {
-        int startIndex = 1+index*(count+offset);
-        int finishIndex = startIndex+count;
-        ArrayList<Worker> subWorkers = this.subList(startIndex,finishIndex);
+    public GroupOfWorkers getSubGroupOfWorkers(int startOffset, int count, int offset, int sizeSubGroup) {
+        int startIndex = startOffset;
+        ArrayList<Worker> subWorkers = this.subList(startIndex,count,offset,sizeSubGroup);
         GroupOfWorkers subGroupOfWorkers = new GroupOfWorkers(subWorkers);
         return subGroupOfWorkers;
     }
