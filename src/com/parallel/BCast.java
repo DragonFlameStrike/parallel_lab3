@@ -3,20 +3,20 @@ package com.parallel;
 public class BCast implements Operation{
     /**
      * @param groupOfWorkers Откуда брать
-     * @param buf Что брать
+     * @param recvbuf Что брать
      * @param count Сколько брать
      * @param datatype Что из этого всего собирать
      * @param commutator И как это все отправлять
      */
     public void execution(GroupOfWorkers groupOfWorkers,
-                          String buf,
+                          String recvbuf,
                           int count,
                           Datatype datatype,
                           Commutator commutator) {
-        for (int index = 0; index < groupOfWorkers.size(); index++) {
-            Worker worker = groupOfWorkers.getWorker(index);
-            Datatype data = datatype.createDatatype(worker.getPartMatrix(buf),0,count);
-            commutator.sendDataAllInGroupFromFirst(index,data);
+        for (int finishWorkerIndex = 0; finishWorkerIndex < groupOfWorkers.size(); finishWorkerIndex++) {
+            Worker worker = groupOfWorkers.getWorker(finishWorkerIndex);
+            Datatype data = datatype.createDatatype(worker.getPartMatrix(recvbuf),0,count);
+            commutator.sendDataAllInGroupFromFirst(finishWorkerIndex,data,recvbuf);
         }
     }
 }

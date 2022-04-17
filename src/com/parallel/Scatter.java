@@ -10,19 +10,23 @@ public class Scatter implements Operation{
      * @param sendtype Что собирать
      * @param workers Куда отправлять
      * @param recvbuf Куда класть
+     * @param commutator И как это все отправлять
      */
     public void execution(Matrix sendbuf,
                           int sendcount,
                           Datatype sendtype,
                           GroupOfWorkers workers,
-                          String recvbuf) {
+                          String recvbuf,
+                          Commutator commutator) {
         datatypes = new ArrayList<>();
         int countOfElements = sendbuf.size()/sendcount;
         for (int datatypeNumber = 0; datatypeNumber < sendcount; datatypeNumber++) {
             datatypes.add(sendtype.createDatatype(sendbuf,datatypeNumber,countOfElements));
         }
-        for (int index = 0; index < workers.size(); index++) {
-            workers.getWorker(index).setPartMatrix(datatypes.get(index),recvbuf);
+
+        for (int finishWorkerIndex = 0; finishWorkerIndex < workers.size(); finishWorkerIndex++) {
+            commutator.sendDataCertainInGroupFromFirst(finishWorkerIndex,datatypes.get(finishWorkerIndex),recvbuf);
         }
     }
 }
+

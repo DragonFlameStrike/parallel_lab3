@@ -14,9 +14,9 @@ public class RowCommutator implements Commutator {
     }
 
     @Override
-    public void sendDataAllInGroupFromFirst(int groupNumber, Datatype datatype) {
+    public void sendDataAllInGroupFromFirst(int groupNumber, Datatype datatype,String buf) {
         GroupOfWorkers currGroup = groupOfWorkersArrayList.get(groupNumber);
-        currGroup.getWorker(0).sendDatatype(currGroup.getWorker(currGroup.size()-1).getWorkerNumber(),datatype,false,true,"partA",this);
+        currGroup.getWorker(0).sendDatatype(currGroup.getWorker(currGroup.size()-1).getWorkerNumber(),datatype,false,true,buf,this);
     }
 
     @Override
@@ -27,6 +27,12 @@ public class RowCommutator implements Commutator {
             return currGroup.getWorker(indexCurrWorkerInGroup + 1);
         }
         return null;
+    }
+
+    @Override
+    public void sendDataCertainInGroupFromFirst(int finishWorkerIndex, Datatype datatype, String recvbuf) {
+        GroupOfWorkers currGroup = groupOfWorkersArrayList.get(0);
+        currGroup.getWorker(0).sendDatatype(currGroup.getWorker(finishWorkerIndex).getWorkerNumber(),datatype,false,false,recvbuf,this);
     }
 
     private int getWorkerIndexInGroup(int currWorkerNumber, GroupOfWorkers currWorkers) {

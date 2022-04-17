@@ -26,8 +26,8 @@ public class Root implements Process,Runnable{
     public void run() {
         GroupOfWorkers firstColumnWorkers = new GroupOfWorkers(workers.subList(0,1,p2-1,p1));
         GroupOfWorkers firstRowWorkers = new GroupOfWorkers(workers.subList(0,p2,0,p2));
-        new Scatter().execution(A,p1,new DatatypeRowMatrix(),firstColumnWorkers,"partA");
-        new Scatter().execution(B,p2,new DatatypeColumnMatrix(),firstRowWorkers,"partB");
+        new Scatter().execution(A,p1,new DatatypeRowMatrix(),firstColumnWorkers,"partA",new ColumnCommutator(workers));
+        new Scatter().execution(B,p2,new DatatypeColumnMatrix(),firstRowWorkers,"partB",new RowCommutator(workers));
         new BCast().execution(firstColumnWorkers,"partA",A.size()/p1,new DatatypeMatrix(),new RowCommutator(workers));
         new BCast().execution(firstRowWorkers,"partB",B.size()/p2,new DatatypeMatrix(),new ColumnCommutator(workers));
         workers.start();
@@ -50,7 +50,7 @@ public class Root implements Process,Runnable{
     public void start() {
         //System.out.println("Запуск " + currThread);
         if (t == null) {
-            t = new Thread(this, String.valueOf("root"));
+            t = new Thread(this, "root");
             t.start();
         }
     }

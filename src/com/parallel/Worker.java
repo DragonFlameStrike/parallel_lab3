@@ -54,7 +54,7 @@ class Worker implements Runnable, Process {
     }
 
     public void sendDatatype(int where, Datatype datatype, boolean saveToCurr, boolean saveToEveryWorker, String rcvBuffer, Commutator commutator) {
-        if (saveToCurr) {
+        if (saveToCurr || where==this.workerNumber) {
             Datatype newDatatype = null;
             try {
                 newDatatype = datatype.clone();
