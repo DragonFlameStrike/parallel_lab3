@@ -1,8 +1,10 @@
 package com.parallel;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.parallel.Main.*;
+import static java.lang.Thread.sleep;
 
 
 public class Root implements Process,Runnable{
@@ -20,6 +22,7 @@ public class Root implements Process,Runnable{
         B = new Matrix(n2,n3);
         A.initA();
         B.initB();
+        result.initResult();
 
     }
     @Override
@@ -30,7 +33,7 @@ public class Root implements Process,Runnable{
         new Scatter().execution(B,p2,new DatatypeColumnMatrix(),firstRowWorkers,"partB",new RowCommutator(workers));
         new BCast().execution(firstColumnWorkers,"partA",A.size()/p1,new DatatypeMatrix(),new RowCommutator(workers));
         new BCast().execution(firstRowWorkers,"partB",B.size()/p2,new DatatypeMatrix(),new ColumnCommutator(workers));
-        workers.start();
+        workers.start(this);
         synchronized (this) {
             wait = true;
             while (wait) {
@@ -41,7 +44,12 @@ public class Root implements Process,Runnable{
                 }
             }
         }
-        new Gather().execution(result,1,new DatatypeRowMatrix(),workers,"");
+        new Gather().execution(result,1,new DatatypeMatrix(),workers,"result",new WorldCommutator(this,workers));
+        System.out.println("A");
+        A.print();
+        System.out.println("B");
+        B.print();
+        System.out.println("R");
         result.print();
     }
 
@@ -58,8 +66,9 @@ public class Root implements Process,Runnable{
     public synchronized void resume() {
         countResume++;
         if (countResume == NumberOfThreads) {
+            //System.out.println("resume done ");
             wait = false;
-            notify();
+            this.notify();
             countResume=0;
         }
     }
@@ -67,5 +76,32 @@ public class Root implements Process,Runnable{
 
     public void setWorkers(List<Process> workers) {
         this.workers = new GroupOfWorkers(workers);
+    }
+
+    public void setPartOfResults(Datatype datatype, String recvbuf, int startWorkerNumber) {
+        if(Objects.equals(recvbuf, "result")){
+            Matrix partResult = datatype.getPartMatrix();
+            int offset = result.getWeight();
+
+            int startIndex=0;
+            int countSkipRowbloks = startWorkerNumber/p2;
+            startIndex += result.getWeight()*partResult.getHight()*countSkipRowbloks;
+            int countSkipbloks = startWorkerNumber%p2;
+            startIndex += partResult.getWeight()*countSkipbloks;
+
+            int countInRow = partResult.getWeight()-1;
+
+            int currElementInRow = 0;
+            int currRow = 0;
+            for (int element = 0; element < partResult.size(); element++) {
+                int index=startIndex+currRow*offset+currElementInRow;
+                result.setElement(index,partResult.getElement(element));
+                currElementInRow++;
+                if(currElementInRow>countInRow) {
+                    currRow++;
+                    currElementInRow = 0;
+                }
+            }
+        }
     }
 }

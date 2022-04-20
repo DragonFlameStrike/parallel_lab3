@@ -36,10 +36,10 @@ public class GroupOfWorkers {
         return subWorkers;
     }
 
-    public void start(){
+    public void start(Root root){
         for (Worker worker:
                 workers) {
-            worker.start();
+            worker.execute(root);
         }
     }
 

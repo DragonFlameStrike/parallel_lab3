@@ -21,7 +21,7 @@ public class DatatypeRowMatrix extends Datatype {
     private void createMatrix(Matrix matrix, int datatypeNumber, int countOfElements){
         weight = matrix.getWeight();
         hight = matrix.getHight()/p1;
-        partMatrix = new Matrix(weight, hight);
+        partMatrix = new Matrix(hight, weight);
         this.start = datatypeNumber * weight * hight;
         for (int i = 0; i < countOfElements; i++) {
             partMatrix.pullElement(matrix.getElement(i + this.start));

@@ -17,7 +17,7 @@ public class DatatypeMatrix extends Datatype{
     private void createMatrix(Matrix matrix, int datatypeNumber, int countOfElements) {
         weight = matrix.getWeight();
         hight = matrix.getHight();
-        partMatrix = new Matrix(weight, hight);
+        partMatrix = new Matrix(hight, weight);
         this.start = datatypeNumber * weight * hight;
         for (int i = 0; i < countOfElements; i++) {
             partMatrix.pullElement(matrix.getElement(i + this.start));

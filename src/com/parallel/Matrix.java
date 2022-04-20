@@ -1,6 +1,7 @@
 package com.parallel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Matrix {
@@ -8,7 +9,7 @@ public class Matrix {
     private int hight;
     private int weight;
 
-    public Matrix(int weight, int hight) {
+    public Matrix(int hight, int weight) {
         this.matrix = new ArrayList<>();
         this.hight = hight;
         this.weight = weight;
@@ -17,7 +18,8 @@ public class Matrix {
     public void initA() {
         for (int i = 0; i < hight; i++) {
             for (int j = 0; j < weight; j++) {
-                matrix.add((double)i*hight+j);
+                //matrix.add((double)i*hight+j);
+                matrix.add((double)i);
             }
         }
     }
@@ -25,7 +27,8 @@ public class Matrix {
     public void initB() {
         for (int i = 0; i < hight; i++) {
             for (int j = 0; j < weight; j++) {
-                matrix.add((double)i*hight+j);
+                //matrix.add((double)i*hight+j);
+                matrix.add((double)j);
             }
         }
     }
@@ -38,6 +41,9 @@ public class Matrix {
 
     public void pullElement(double element) {
         matrix.add(element);
+    }
+    public void setElement(int index ,double element) {
+        matrix.set(index,element);
     }
     public double getElement(int index){
         return matrix.get(index);
@@ -55,4 +61,11 @@ public class Matrix {
         return hight;
     }
 
+    public void initResult() {
+        for (int i = 0; i < hight; i++) {
+            for (int j = 0; j < weight; j++) {
+                matrix.add(0.0);
+            }
+        }
+    }
 }

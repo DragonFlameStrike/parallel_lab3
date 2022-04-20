@@ -36,6 +36,11 @@ public class ColumnCommutator implements Commutator{
         currGroup.getWorker(0).sendDatatype(currGroup.getWorker(finishWorkerIndex).getWorkerNumber(),datatype,false,false,recvbuf,this);
     }
 
+    @Override
+    public void sendData(int i, Datatype datatype, String result, int workerNumber) {
+
+    }
+
     private int getWorkerIndexInGroup(int currWorkerNumber, GroupOfWorkers currWorkers) {
         for (int workerIndex = 0; workerIndex < currWorkers.size(); workerIndex++) {
             if(currWorkers.getWorker(workerIndex).getWorkerNumber() == currWorkerNumber) return workerIndex;

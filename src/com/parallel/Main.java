@@ -8,9 +8,9 @@ import java.util.List;
 public class Main {
     static final int p1 = 4;
     static final int p2 = 4;
-    static final int n1 = 8;
+    static final int n1 = 4;
     static final int n2 = 8;
-    static final int n3 = 8;
+    static final int n3 = 4;
     static final int NumberOfThreads = p1 * p2;
     static final int root = 0;
 
